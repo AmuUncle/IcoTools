@@ -1,0 +1,191 @@
+QPalette{background:#1A1F31;}*{outline:0px;}
+
+
+QWidget[form="mainwnd"]
+{
+}
+
+QWidget[form="mainpane"]
+{
+    border-radius: 10px;
+    background: #1A1F31;
+}
+
+
+QWidget[form="m_wLeftPane"], QWidget[form="m_wContentPane"], QWidget[form="m_wRightPane"]
+{
+    /* border: 1px solid #333; */
+    background: #262941;
+    border-radius: 20px 15px;
+}
+
+
+QWidget[form="About"]
+{
+    border: 2px solid #333;
+    background: #e7e7e7;
+    border-radius: 20px 15px;
+}
+
+QWidget[form="mainpane"]
+{
+    border-radius: 10px;
+    background: #1A1F31;
+}
+
+
+
+QPushButton[title_btn="true"]
+{
+    background:none;
+    border-style:none;
+    color:#fff;
+    font-size: 12px;
+}
+
+QPushButton[title_btn="true"]:hover
+{
+    color:#6E78FF;
+}
+
+QPushButton[title_btn="true"]:pressed
+{
+    color:#6E78FF;
+}
+
+QPushButton[title_btn="true"]:checked
+{
+    color:#6E78FF;
+}
+
+QPushButton[title_btn="true"]:disabled
+{
+    color:#D7D7D7;
+}
+
+
+QPushButton[shape_btn="true"]
+{
+    background:none;
+    border-style:none;
+    color:#fff;
+    font-size: 12px;
+    border: 1px solid #333;
+}
+
+QPushButton[shape_btn="true"]:hover
+{
+    border: 1px solid #5768a4;
+}
+
+QPushButton[shape_btn="true"]:pressed
+{
+    border: 1px solid #d6dae9;
+}
+
+QPushButton[shape_btn="true"]:checked
+{
+    border: 1px solid #f0f1f7;
+}
+
+QPushButton[shape_btn="true"]:disabled
+{
+    color:#D7D7D7;
+}
+
+QLabel[title_label="true"] {
+    color: #fff;
+    font-size: 20px;
+    font-family: "Microsoft YaHei";
+    font-weight:bold;
+}
+
+QLabel[color="true"] {
+    border: 1px solid #333;
+}
+
+QLabel[Separator="true"] {
+    background: #333;
+}
+
+
+QPushButton#m_btnExport
+{
+    background: #6656F5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+QPushButton#m_btnExport:hover
+{
+    background: #3b2ad6;
+}
+
+
+
+
+
+
+
+.IconfontBtn
+{
+    background:none;
+    border-style:none;
+    color:#fff;
+}
+
+.IconfontBtn
+{
+    color:#6E78FF;
+}
+
+.IconfontBtn
+{
+    color:#6E78FF;
+}
+
+.IconfontBtn
+{
+    color:#6E78FF;
+}
+
+.IconfontBtn
+{
+    color:#D7D7D7;
+}
+
+
+
+
+
+
+
+
+
+
+
+QSlider::groove:horizontal {
+    height: 6px;
+    background: #707eb3;
+}
+
+QSlider::handle:horizontal {
+    width: 6px;
+    background: #fff;
+    margin: -6px 0px -6px 0px;
+    border-radius: 6px;
+}
+
+
+QComboBox {
+	border:none;
+	background:#707eb3;
+	color:#ffffff;
+    min-width: 60px;
+    height: 26px;
+}
+
+QComboBox::drop-down{
+    border-left: 1px solid #333; 
+}
