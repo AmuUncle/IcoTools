@@ -32,7 +32,7 @@
 ![演示3](https://gitee.com/hudejie/IcoTools/raw/master/screenshot/3.png)
 
 ### 生成图标
-![生成图标](https://gitee.com/hudejie/IcoTools/raw/master/screenshot/icon.png)
+![生成图标](https://gitee.com/hudejie/IcoTools/raw/master/screenshot/icon.ico)
 
 # 📝参考网址
 
