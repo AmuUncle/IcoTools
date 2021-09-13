@@ -161,11 +161,157 @@ QPushButton#m_btnExport:hover
 
 
 
+QListView
+{
+    border:0px solid #132743;
+}
+
+QListView::item:selected
+{
+    color:#3F98DE;
+    background:#E5EAEC;
+}
+
+QListView::item:hover
+{
+    color:#3F98DE;
+    background:#E5EAEC;
+}
+
+QListView::item
+{
+    border-bottom: 1px solid #E8E8E8;
+}
+
+QMenuBar::item
+{
+    color:#333333;
+    background-color:#FFFFFF;
+}
+
+QMenu,QMenuBar,QMenu:disabled,QMenuBar:disabled
+{
+    color:#333333;
+    background-color:#FFFFFF;
+    border:1px solid #E8E8E8;
+}
+
+QMenu::item
+{
+    padding:3px 20px;
+}
+
+QMenu::item:selected,QMenuBar::item:selected
+{
+ 
+    border:0px solid #E8E8E8;
+    background:#E5EAEC;
+}
+
+QMenu::icon
+{
+    padding-left: 4px;
+}
+
+QSlider::groove:horizontal
+{
+    background:#133050;
+    height:8px;
+    border-radius:4px;
+}
+
+QSlider::add-page:horizontal
+{
+    background:#FFFFFF;
+    height:8px;
+    border:1px solid #CECECE;
+}
+
+QSlider::sub-page:horizontal{
+    background:#328DE0;
+    height:8px;
+    border:1px solid #CECECE;
+}
+
+QSlider::handle:horizontal
+{
+    width:8px;
+    margin-top:-3px;
+    margin-bottom:-3px;
+    border:1px solid #CECECE;
+    background:#FFFFFF;
+}
+
+QSlider::groove:vertical
+{
+    width:8px;
+    border-radius:4px;
+    background:#133050;
+}
+
+QSlider::add-page:vertical
+{
+    width:8px;
+    border-radius:4px;
+    background:#FFFFFF;
+    border:1px solid #CECECE;
+}
+
+QSlider::sub-page:vertical
+{
+    width:8px;
+    border-radius:4px;
+    background:#328DE0;
+    border:1px solid #CECECE;
+}
+
+QSlider::handle:vertical
+{
+    margin-left:-3px;
+    margin-right:-3px;
+    border-radius:6px;
+    border:1px solid #CECECE;
+    background:#FFFFFF;
+}
+
+QScrollBar:vertical, QScrollBar:horizontal
+{
+    background:#FFFFFF;
+    padding:0px;
+    max-width:5px;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal
+{
+    background:#B3B3B3;
+    min-height:20px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::add-page:horizontal
+{
+    background:none;
+}
+
+QScrollBar::sub-page:vertical, QScrollBar::sub-page:horizontal
+{
+    background:none;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::add-line:horizontal
+{
+    background:none;
+    height:0px;width:0px;
+}
+
+QScrollBar::sub-line:vertical, QScrollBar::sub-line:horizontal
+{
+    background:none;
+    height:0px;width:0px;
+}
 
 
 
-
-QSlider::groove:horizontal {
+/* QSlider::groove:horizontal {
     height: 6px;
     background: #707eb3;
 }
@@ -175,7 +321,7 @@ QSlider::handle:horizontal {
     background: #fff;
     margin: -6px 0px -6px 0px;
     border-radius: 6px;
-}
+} */
 
 
 QComboBox {
@@ -186,6 +332,13 @@ QComboBox {
     height: 26px;
 }
 
-QComboBox::drop-down{
-    border-left: 1px solid #333; 
+QComboBox::drop-down {
+    border:none;
 }
+
+QComboBox::down-arrow {
+    image: url(:/img/img/down.png);
+    height:30px;
+    width: 20px;
+    border: none;
+}   

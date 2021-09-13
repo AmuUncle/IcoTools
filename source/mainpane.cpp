@@ -46,6 +46,9 @@ MainPane::MainPane(QWidget *parent) : QWidget(parent)
     m_sliderA = NULL;
     m_labelAV = NULL;
     m_labelSeparator2 = NULL;
+    m_labelOpacity = NULL;
+    m_sliderOpacity = NULL;
+    m_labelOpacityV = NULL;
 
     m_wBottomPane = NULL;
     m_btnReset = NULL;
@@ -60,8 +63,7 @@ MainPane::MainPane(QWidget *parent) : QWidget(parent)
     m_nBorderRadius = 0;
     m_nPadding = 0;
     m_colorBg = QColor(255, 255, 255, 255);
-
-    //m_pixOld = QPixmap(":/img/res/img/logo.png");
+    m_nOpacity = 100;
 
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
     setProperty("form", "mainpane");
@@ -184,6 +186,12 @@ void MainPane::InitRightPane()
     m_sliderA->setMaximum(255);  // 最大值
     m_sliderA->setValue(255);
 
+    m_labelOpacity->setText(tr("透明度"));
+    m_sliderOpacity->setOrientation(Qt::Horizontal);  // 水平方向
+    m_sliderOpacity->setMinimum(0);  // 最小值
+    m_sliderOpacity->setMaximum(100);  // 最大值
+    m_sliderOpacity->setValue(100);
+
     connect(m_sliderPadding, &QSlider::valueChanged, [=](int value)
     {
         m_nPadding = value;
@@ -213,6 +221,47 @@ void MainPane::InitRightPane()
         m_colorBg.setAlpha(value);
         UpdatePixmap();
     });
+
+
+    connect(m_sliderOpacity, &QSlider::valueChanged, [=](int value)
+    {
+        m_nOpacity = value;
+        UpdatePixmap();
+    });
+}
+
+void MainPane::InitBottomPane()
+{
+    m_btnReset->setText(tr("重新选择"));
+    m_labelFormat->setText(tr("格式:"));
+    m_labelSize->setText(tr("大小:"));
+    m_labelFormat->setFixedHeight(26);
+    m_labelSize->setFixedHeight(26);
+
+    m_btnReset->setObjectName("m_btnExport");
+    m_btnReset->setFixedSize(100, 26);
+    m_btnExport->setObjectName("m_btnExport");
+    m_btnExport->setFixedSize(100, 26);
+    m_btnExport->setText(tr("导出"));
+
+    m_comboxFormat->setFixedSize(100, 26);
+    m_comboxFormat->addItem(tr(".ico"));
+    m_comboxFormat->addItem(tr(".png"));
+    m_comboxFormat->addItem(tr(".jpg"));
+
+    m_comboxSize->setFixedSize(100, 26);
+    m_comboxSize->addItem("8*8", 8);
+    m_comboxSize->addItem("16*16", 16);
+    m_comboxSize->addItem("24*24", 24);
+    m_comboxSize->addItem("32*32", 32);
+    m_comboxSize->addItem("36*36", 32);
+    m_comboxSize->addItem("40*40", 40);
+    m_comboxSize->addItem("48*48", 48);
+    m_comboxSize->addItem("64*64", 64);
+    m_comboxSize->addItem("100*100", 100);
+    m_comboxSize->addItem("128*128", 128);
+    m_comboxSize->addItem("256*256", 256);
+    m_comboxSize->setCurrentIndex(10);
 }
 
 void MainPane::resizeEvent(QResizeEvent *event)
@@ -226,6 +275,7 @@ void MainPane::UpdatePixmap()
     m_labelGV->setText(QString::number(m_colorBg.green()));
     m_labelBV->setText(QString::number(m_colorBg.blue()));
     m_labelAV->setText(QString::number(m_colorBg.alpha()));
+    m_labelOpacityV->setText(QString::number(m_nOpacity));
 
     const int MAX_WIDTH = 512;
 
@@ -244,6 +294,8 @@ void MainPane::UpdatePixmap()
     QPainter painter;
     painter.begin(&pix);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing); // 抗锯齿和使用平滑转换算法
+
+    painter.setOpacity((double)m_nOpacity / 100.0);
 
     int nBorderRadius = MAX_WIDTH / 2 / 2 * m_nBorderRadius / 100;
     if (100 == m_nBorderRadius)
@@ -311,6 +363,9 @@ void MainPane::CreateAllChildWnd()
     NEW_OBJECT(m_sliderA, QSlider);
     NEW_OBJECT(m_labelAV, QLabel);
     NEW_OBJECT(m_labelSeparator2, QLabel);
+    NEW_OBJECT(m_labelOpacity, QLabel);
+    NEW_OBJECT(m_sliderOpacity, QSlider);
+    NEW_OBJECT(m_labelOpacityV, QLabel);
 
     NEW_OBJECT(m_wBottomPane, QWidget);
     NEW_OBJECT(m_btnReset, QPushButton);
@@ -341,9 +396,7 @@ void MainPane::InitCtrl()
     m_btnClose->setFixedSize(24, 24);
     m_btnAbout->setFixedSize(24, 24);
 
-    m_btnReset->setText(tr("重新选择"));
-    m_labelFormat->setText(tr("格式:"));
-    m_labelSize->setText(tr("大小:"));
+
 
     QImage img(":/img/img/logo.png");
     m_labelLogo->setPixmap(QPixmap::fromImage(img.scaled(m_labelLogo->size(),
@@ -360,50 +413,8 @@ void MainPane::InitCtrl()
     m_btnAbout->setProperty("title_btn", "true");
 
     InitLeftPane();
-
     InitRightPane();
-
-
-    m_btnReset->setObjectName("m_btnExport");
-    m_btnReset->setFixedSize(100, 26);
-    m_btnExport->setObjectName("m_btnExport");
-    m_btnExport->setFixedSize(100, 26);
-    m_btnExport->setText(tr("导出"));
-
-    m_comboxFormat->addItem(tr(".ico"));
-    m_comboxFormat->addItem(tr(".png"));
-    m_comboxFormat->addItem(tr(".jpg"));
-
-    m_comboxSize->addItem("8*8", 8);
-    m_comboxSize->addItem("16*16", 16);
-    m_comboxSize->addItem("24*24", 24);
-    m_comboxSize->addItem("32*32", 32);
-    m_comboxSize->addItem("36*36", 32);
-    m_comboxSize->addItem("40*40", 40);
-    m_comboxSize->addItem("48*48", 48);
-    m_comboxSize->addItem("64*64", 64);
-    m_comboxSize->addItem("100*100", 100);
-    m_comboxSize->addItem("128*128", 128);
-    m_comboxSize->addItem("256*256", 256);
-
-    connect(m_btnExport, &QPushButton::clicked, [=]()
-    {
-        QString strFormat = m_comboxFormat->currentText();
-        int size = m_comboxSize->currentData().toInt();
-
-        QString fileName = QFileDialog::getSaveFileName(this,
-                tr("保存图片"),
-                "",
-                (QString("保存图片(*%1)").arg(strFormat)));
-
-        if (!fileName.isNull())
-        {
-            QPixmap pixTemp = m_pixNew.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-            QImage img = pixTemp.toImage();
-            img.save(fileName, NULL, 100);
-        }
-    });
+    InitBottomPane();
 
     UpdatePixmap();
 }
@@ -416,7 +427,24 @@ void MainPane::InitSolts()
 
     connect(m_pCanvas, SIGNAL(SignalSelectImage()), this, SLOT(OnSelectImage()));
     connect(m_pCanvas, SIGNAL(SignalClear()), this, SLOT(OnClear()));
+    connect(m_pCanvas, &Canvas::SignalDropImageChange, [=](QString filename) {
+        if(filename.isEmpty())
+        {
+           return;
+        }
+        else
+        {
+            QImage img2;
+            if (!(img2.load(filename))) //加载图像
+            {
+               QMessageBox::information(this, tr("打开图像失败"), tr("打开图像失败!"));
+               return;
+            }
 
+            m_pixOld = QPixmap::fromImage(img2);
+            UpdatePixmap();
+        }
+    });
 
     connect(m_btnAbout, &QPushButton::clicked, [=]() {
 
@@ -437,6 +465,25 @@ void MainPane::InitSolts()
 //        animation->setStartValue(rcStart);
 //        animation->setEndValue(rcEnd);
 //        animation->start();
+    });
+
+    connect(m_btnExport, &QPushButton::clicked, [=]()
+    {
+        QString strFormat = m_comboxFormat->currentText();
+        int size = m_comboxSize->currentData().toInt();
+
+        QString fileName = QFileDialog::getSaveFileName(this,
+                tr("保存图片"),
+                "",
+                (QString("保存图片(*%1)").arg(strFormat)));
+
+        if (!fileName.isNull())
+        {
+            QPixmap pixTemp = m_pixNew.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+            QImage img = pixTemp.toImage();
+            img.save(fileName, NULL, 100);
+        }
     });
 }
 
@@ -518,6 +565,11 @@ void MainPane::Relayout()
 
     nIndex++;
     layoutRight->addWidget(m_labelSeparator2, nIndex, 0, 1, 8);
+
+    nIndex++;
+    layoutRight->addWidget(m_labelOpacity, nIndex, 0, 1, 1);
+    layoutRight->addWidget(m_sliderOpacity, nIndex, 1, 1, 6);
+    layoutRight->addWidget(m_labelOpacityV, nIndex, 7, 1, 1);
 
     layoutRight->setSpacing(6);
     layoutRight->setContentsMargins(5, 10, 5, 10);

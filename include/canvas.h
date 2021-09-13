@@ -18,10 +18,13 @@ private:
     void mouseReleaseEvent(QMouseEvent *event);
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dropEvent(QDropEvent *e);
 
 signals:
     void SignalSelectImage();
     void SignalClear();
+    void SignalDropImageChange(QString imgPath);
 
 private:
     QPixmap m_pixIcon;

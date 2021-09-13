@@ -22,6 +22,7 @@ private:
 
     void InitLeftPane();
     void InitRightPane();
+    void InitBottomPane();
 
     void resizeEvent(QResizeEvent *event);
 
@@ -83,6 +84,9 @@ private:
     QSlider *m_sliderA;
     QLabel *m_labelAV;
     QLabel *m_labelSeparator2;
+    QLabel *m_labelOpacity;
+    QSlider *m_sliderOpacity;
+    QLabel *m_labelOpacityV;
 
     QWidget *m_wBottomPane;
     QPushButton *m_btnReset;
@@ -99,6 +103,7 @@ private:
     uint m_nBorderRadius;
     uint m_nPadding;
     QColor m_colorBg;
+    uint m_nOpacity;
 };
 
 #endif // MAINPANE_H

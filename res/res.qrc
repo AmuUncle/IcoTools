@@ -7,5 +7,6 @@
         <file>img/icon.png</file>
         <file>img/iconfont.ttf</file>
         <file>img/logo.png</file>
+        <file>img/down.png</file>
     </qresource>
 </RCC>

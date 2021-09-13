@@ -3,6 +3,8 @@
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
     m_bEnter = false;
+
+    setAcceptDrops(true);
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
@@ -19,7 +21,7 @@ void Canvas::paintEvent(QPaintEvent *event)
 
     painter.save();
     painter.setBrush(QColor("#E9E9E9"));
-    for (int nRow = 0; nRow < height() / 20; nRow++)
+    for (int nRow = 0; nRow < (height() / 20 + 1); nRow++)
     {
         for (int nCol = 0; nCol < width() / 20; nCol++)
         {
@@ -100,7 +102,7 @@ void Canvas::paintEvent(QPaintEvent *event)
 
         QRect rcText(rcImg);
         rcText.setTop(rcImg.top() + (rcImg.height() - LINE) / 2 + LINE + 10);
-        painter.drawText(rcText, Qt::AlignHCenter | Qt::AlignTop, tr("选择图像"));
+        painter.drawText(rcText, Qt::AlignHCenter | Qt::AlignTop, tr("点击上传图片，也可拖曳添加图片\r\n 支持JPG、JPEG、PNG、BMP、ICO格式图片转换"));
 
         painter.restore();
     }
@@ -128,4 +130,33 @@ void Canvas::leaveEvent(QEvent *event)
 {
     m_bEnter = false;
     update();
+}
+
+void Canvas::dragEnterEvent(QDragEnterEvent *event)
+{
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty())
+    {
+        event->ignore();
+        return;
+    }
+
+    QFileInfo fileinfo = QFileInfo(urls[0].toString());
+    QString suffix = fileinfo.suffix();
+
+    if(!suffix.compare("jpg") || !suffix.compare("png") || !suffix.compare("ico") || !suffix.compare("jpeg") || !suffix.compare("bmp"))
+        event->acceptProposedAction();
+     else
+        event->ignore();
+}
+
+void Canvas::dropEvent(QDropEvent *event)
+{
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty())
+    {
+        return;
+    }
+
+    emit SignalDropImageChange(urls[0].toLocalFile());
 }
