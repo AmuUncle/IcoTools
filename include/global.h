@@ -16,6 +16,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+#define VERSION "v1.0"
+
 #define GLOBAL_FUNC \
         void CreateAllChildWnd(); \
         void InitCtrl(); \

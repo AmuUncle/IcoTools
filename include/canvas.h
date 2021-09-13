@@ -7,11 +7,18 @@
 class Canvas : public QWidget
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor colorEmptyBg WRITE SetEmptyBgColor)
+    Q_PROPERTY(QColor colorSelColor WRITE SetSelColor)
+
 public:
     explicit Canvas(QWidget *parent = 0);
 
 public:
     void SetPixmap(QPixmap pixIcon) { m_pixIcon = pixIcon; update(); }
+
+    void SetEmptyBgColor(QColor color) { m_colorEmptyBg = color; update(); }
+    void SetSelColor(QColor color) { m_colorSelColor = color; update(); }
 
 private:
     void paintEvent(QPaintEvent *event);
@@ -29,6 +36,9 @@ signals:
 private:
     QPixmap m_pixIcon;
     bool m_bEnter;
+
+    QColor m_colorEmptyBg;
+    QColor m_colorSelColor;
 };
 
 #endif // CANVAS_H

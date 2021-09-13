@@ -11,8 +11,25 @@ class About;
 class MainPane : public QWidget
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor colorBg WRITE SetBgColor)
+    Q_PROPERTY(QColor colorLeftBtn WRITE SetLeftBtnColor)
+
 public:
     explicit MainPane(QWidget *parent = 0);
+
+    void SetBgColor(QColor color);
+    void SetLeftBtnColor(QColor color);
+
+    enum EMenuItem
+    {
+        MENUITEM_ABOUT = 0,
+
+        MENUITEM_THEME = 100,
+        MENUITEM_THEME_DEFAULT = 101,
+        MENUITEM_THEME_FLATUI = 102,
+        MENUITEM_THEME_PS = 103,
+    };
 
 private:
     void paintEvent(QPaintEvent *event);
@@ -38,6 +55,9 @@ private slots:
     void OnMinWindows();
     void OnSelectImage();
     void OnClear();
+
+    void OnBtnAboutClicked();
+    void OnMenuTriggered(QAction*);
 
 signals:
     void SignalExit();
@@ -104,6 +124,8 @@ private:
     uint m_nPadding;
     QColor m_colorBg;
     uint m_nOpacity;
+
+    QColor m_colorLeftBtn;
 };
 
 #endif // MAINPANE_H

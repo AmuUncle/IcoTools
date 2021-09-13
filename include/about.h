@@ -16,6 +16,12 @@ public:
 
 private:
     GLOBAL_FUNC
+
+private:
+    QWidget *m_widgetMain;
+    QLabel *m_labelLogo;
+    QLabel *m_labelVersion;
+    QPushButton *m_btnOk;
 };
 
 #endif // ABOUT_H

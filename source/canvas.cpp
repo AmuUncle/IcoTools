@@ -4,6 +4,9 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
     m_bEnter = false;
 
+    setProperty("form", "Canvas");
+    setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
+
     setAcceptDrops(true);
 }
 
@@ -76,10 +79,10 @@ void Canvas::paintEvent(QPaintEvent *event)
 
         painter.save();
         painter.setPen(Qt::NoPen);
-        painter.setBrush(QColor("#2B2B2B"));
+        painter.setBrush(m_colorEmptyBg);
         painter.drawRect(rcImg);
 
-        QColor colorFlag("#b0b8d5");
+        QColor colorFlag(m_colorSelColor);
 
         if (m_bEnter)
             colorFlag = Qt::white;

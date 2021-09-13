@@ -62,13 +62,49 @@ MainPane::MainPane(QWidget *parent) : QWidget(parent)
 
     m_nBorderRadius = 0;
     m_nPadding = 0;
-    m_colorBg = QColor(255, 255, 255, 255);
     m_nOpacity = 100;
 
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
     setProperty("form", "mainpane");
 
     GLOBAL_FUNC_RUN
+}
+
+void MainPane::SetBgColor(QColor color)
+{
+    m_colorBg = color;
+
+    m_sliderR->setValue(m_colorBg.red());
+    m_sliderG->setValue(m_colorBg.green());
+    m_sliderB->setValue(m_colorBg.blue());
+    m_sliderA->setValue(m_colorBg.alpha());
+
+    UpdatePixmap();
+}
+
+void MainPane::SetLeftBtnColor(QColor color)
+{
+    m_colorLeftBtn = color;
+    QString strColor = m_colorLeftBtn.name();
+
+    m_btnShape1->setIcon(QIcon(GetPixmap(strColor, 50, 50, 0)));
+    m_btnShape1->setIconSize(QSize(50, 50));
+    m_btnShape2->setIcon(QIcon(GetPixmap(strColor, 50, 50, 3)));
+    m_btnShape2->setIconSize(QSize(50, 50));
+    m_btnShape3->setIcon(QIcon(GetPixmap(strColor, 50, 50, 6)));
+    m_btnShape3->setIconSize(QSize(50, 50));
+    m_btnShape4->setIcon(QIcon(GetPixmap(strColor, 50, 50, 9)));
+    m_btnShape4->setIconSize(QSize(50, 50));
+    m_btnShape5->setIcon(QIcon(GetPixmap(strColor, 50, 50, 12)));
+    m_btnShape5->setIconSize(QSize(50, 50));
+    m_btnShape6->setIcon(QIcon(GetPixmap(strColor, 50, 50, 15)));
+    m_btnShape6->setIconSize(QSize(50, 50));
+    m_btnShape7->setIcon(QIcon(GetPixmap(strColor, 50, 50, 18)));
+    m_btnShape7->setIconSize(QSize(50, 50));
+    m_btnShape8->setIcon(QIcon(GetPixmap(strColor, 50, 50, 22)));
+    m_btnShape8->setIconSize(QSize(50, 50));
+    m_btnShape9->setIcon(QIcon(GetPixmap(strColor, 50, 50, 25)));
+    m_btnShape9->setIconSize(QSize(50, 50));
 }
 
 void MainPane::paintEvent(QPaintEvent *event)
@@ -98,7 +134,7 @@ void MainPane::InitLeftPane()
     m_btnShape8->setProperty("shape_btn", true);
     m_btnShape9->setProperty("shape_btn", true);
 
-    QString strColor = "#5768a4";
+    QString strColor = m_colorLeftBtn.name();
     m_btnShape1->setIcon(QIcon(GetPixmap(strColor, 50, 50, 0)));
     m_btnShape1->setIconSize(QSize(50, 50));
     m_btnShape2->setIcon(QIcon(GetPixmap(strColor, 50, 50, 3)));
@@ -283,8 +319,11 @@ void MainPane::UpdatePixmap()
     {
         m_pCanvas->SetPixmap(QPixmap());
         m_pixNew = QPixmap();
+        m_btnExport->setCursor(QCursor(Qt::ForbiddenCursor));
         return;
     }
+
+    m_btnExport->setCursor(QCursor(Qt::ArrowCursor));
 
     QPixmap pix(MAX_WIDTH, MAX_WIDTH);
     QRect rcBaic(0, 0, MAX_WIDTH, MAX_WIDTH);
@@ -396,12 +435,10 @@ void MainPane::InitCtrl()
     m_btnClose->setFixedSize(24, 24);
     m_btnAbout->setFixedSize(24, 24);
 
-
-
     QImage img(":/img/img/logo.png");
     m_labelLogo->setPixmap(QPixmap::fromImage(img.scaled(m_labelLogo->size(),
-                                                       Qt::IgnoreAspectRatio,
-                                                       Qt::SmoothTransformation)));
+                                                         Qt::IgnoreAspectRatio,
+                                                         Qt::SmoothTransformation)));
     m_labelTitle->setText(tr("图标制作工具"));
     m_labelTitle->setProperty("title_label", "true");
 
@@ -423,6 +460,7 @@ void MainPane::InitSolts()
 {
     connect(m_btnMin, SIGNAL(clicked()), this, SLOT(OnMinWindows()));
     connect(m_btnClose, SIGNAL(clicked()), this, SLOT(OnExit()));
+    connect(m_btnAbout, SIGNAL(clicked()), this, SLOT(OnBtnAboutClicked()));
     connect(m_btnReset, SIGNAL(clicked()), this, SLOT(OnSelectImage()));
 
     connect(m_pCanvas, SIGNAL(SignalSelectImage()), this, SLOT(OnSelectImage()));
@@ -430,15 +468,15 @@ void MainPane::InitSolts()
     connect(m_pCanvas, &Canvas::SignalDropImageChange, [=](QString filename) {
         if(filename.isEmpty())
         {
-           return;
+            return;
         }
         else
         {
             QImage img2;
             if (!(img2.load(filename))) //加载图像
             {
-               QMessageBox::information(this, tr("打开图像失败"), tr("打开图像失败!"));
-               return;
+                QMessageBox::information(this, tr("打开图像失败"), tr("打开图像失败!"));
+                return;
             }
 
             m_pixOld = QPixmap::fromImage(img2);
@@ -446,36 +484,39 @@ void MainPane::InitSolts()
         }
     });
 
-    connect(m_btnAbout, &QPushButton::clicked, [=]() {
+    //    connect(m_btnAbout, &QPushButton::clicked, [=]() {
 
-//        m_pAboutdlg->setModal(true);
-//        m_pAboutdlg->show();
+    ////        m_pAboutdlg->setModal(true);
+    ////        m_pAboutdlg->show();
 
-//        QPoint ptBtn = m_pCanvas->mapToGlobal(m_pCanvas->pos());
-//        QPoint point(ptBtn);
-//        point.setX(ptBtn.x() - m_pCanvas->pos().x() + m_pCanvas->width() / 2 - m_pAboutdlg->width() / 2 - 4);
-//        point.setY(ptBtn.y() - m_pCanvas->pos().y() - m_pAboutdlg->height() - 2);
+    ////        QPoint ptBtn = m_pCanvas->mapToGlobal(m_pCanvas->pos());
+    ////        QPoint point(ptBtn);
+    ////        point.setX(ptBtn.x() - m_pCanvas->pos().x() + m_pCanvas->width() / 2 - m_pAboutdlg->width() / 2 - 4);
+    ////        point.setY(ptBtn.y() - m_pCanvas->pos().y() - m_pAboutdlg->height() - 2);
 
-//        QRect rcStart, rcEnd;
-//        rcEnd = QRect(point.x(), point.y() + m_pAboutdlg->height(), m_pAboutdlg->width(), m_pAboutdlg->height());
-//        rcStart = QRect(point.x(), point.y(), m_pAboutdlg->width(), m_pAboutdlg->height());
+    ////        QRect rcStart, rcEnd;
+    ////        rcEnd = QRect(point.x(), point.y() + m_pAboutdlg->height(), m_pAboutdlg->width(), m_pAboutdlg->height());
+    ////        rcStart = QRect(point.x(), point.y(), m_pAboutdlg->width(), m_pAboutdlg->height());
 
-//        QPropertyAnimation *animation = new QPropertyAnimation(m_pAboutdlg, "geometry");
-//        animation->setDuration(200);
-//        animation->setStartValue(rcStart);
-//        animation->setEndValue(rcEnd);
-//        animation->start();
-    });
+    ////        QPropertyAnimation *animation = new QPropertyAnimation(m_pAboutdlg, "geometry");
+    ////        animation->setDuration(200);
+    ////        animation->setStartValue(rcStart);
+    ////        animation->setEndValue(rcEnd);
+    ////        animation->start();
+    //    });
 
     connect(m_btnExport, &QPushButton::clicked, [=]()
     {
+        if (m_pixNew.isNull())
+            return;
+
         QString strFormat = m_comboxFormat->currentText();
         int size = m_comboxSize->currentData().toInt();
 
         QString fileName = QFileDialog::getSaveFileName(this,
-                tr("保存图片"),
-                "",
-                (QString("保存图片(*%1)").arg(strFormat)));
+                                                        tr("保存图片"),
+                                                        "",
+                                                        (QString("保存图片(*%1)").arg(strFormat)));
 
         if (!fileName.isNull())
         {
@@ -652,7 +693,7 @@ void MainPane::OnLeftBtnsClick()
 
 void MainPane::OnExit()
 {
-   emit SignalExit();
+    emit SignalExit();
 }
 
 void MainPane::OnMinWindows()
@@ -669,15 +710,15 @@ void MainPane::OnSelectImage()
 
     if(filename.isEmpty())
     {
-       return;
+        return;
     }
     else
     {
         QImage img2;
         if (!(img2.load(filename))) //加载图像
         {
-           QMessageBox::information(this, tr("打开图像失败"), tr("打开图像失败!"));
-           return;
+            QMessageBox::information(this, tr("打开图像失败"), tr("打开图像失败!"));
+            return;
         }
 
         m_pixOld = QPixmap::fromImage(img2);
@@ -689,4 +730,120 @@ void MainPane::OnClear()
 {
     m_pixOld = QPixmap();
     UpdatePixmap();
+}
+
+void MainPane::OnBtnAboutClicked()
+{
+    //创建菜单对象
+    QMenu *pMenu = new QMenu();
+
+    QAction *pRest = new QAction(tr("默认"), pMenu);
+    pRest->setData(MENUITEM_THEME_DEFAULT);
+    QAction *pGoOffwork = new QAction(tr("扁平化"), pMenu);
+    pGoOffwork->setData(MENUITEM_THEME_FLATUI);
+    QAction *pGoOffwork2 = new QAction(tr("ps"), pMenu);
+    pGoOffwork2->setData(MENUITEM_THEME_PS);
+
+    QMenu *pChildRest = new QMenu(pMenu);
+    pChildRest->setTitle(tr("主题"));
+    pChildRest->addAction(pRest);
+    pChildRest->addAction(pGoOffwork);
+    pChildRest->addAction(pGoOffwork2);
+
+    QAction *pMsgMgr = new QAction(tr("关于"), pMenu);
+    pMsgMgr->setData(MENUITEM_ABOUT);
+
+    //把QAction对象添加到菜单上
+    pMenu->addMenu(pChildRest);
+    pMenu->addAction(pMsgMgr);
+
+
+    connect(pMenu, SIGNAL(triggered(QAction*)), this, SLOT(OnMenuTriggered(QAction*)));
+
+    QPoint ptMenu = mapToGlobal(m_btnAbout->pos());
+    ptMenu.setX(ptMenu.x() + 2);
+    ptMenu.setY(ptMenu.y() + m_btnAbout->height() + 2);
+    pMenu->exec(ptMenu);
+
+    //释放内存
+    QList<QAction*> list = pMenu->actions();
+    foreach (QAction* pAction, list)
+        delete pAction;
+
+    delete pMenu;
+}
+
+void MainPane::OnMenuTriggered(QAction *action)
+{
+    EMenuItem item = (EMenuItem)(action->data().toInt());
+
+    switch (item)
+    {
+    case MENUITEM_ABOUT:
+    {
+        m_pAboutdlg->setModal(true);
+        m_pAboutdlg->show();
+
+        QPoint ptBtn = m_pCanvas->mapToGlobal(m_pCanvas->pos());
+        QPoint point(ptBtn);
+        point.setX(ptBtn.x() - m_pCanvas->pos().x() + m_pCanvas->width() / 2 - m_pAboutdlg->width() / 2 - 4);
+        point.setY(ptBtn.y() - m_pCanvas->pos().y() - m_pAboutdlg->height() - 2);
+
+        QRect rcStart, rcEnd;
+        rcEnd = QRect(point.x(), point.y() + m_pAboutdlg->height(), m_pAboutdlg->width(), m_pAboutdlg->height());
+        rcStart = QRect(point.x(), point.y(), m_pAboutdlg->width(), m_pAboutdlg->height());
+
+        QPropertyAnimation *animation = new QPropertyAnimation(m_pAboutdlg, "geometry");
+        animation->setDuration(200);
+        animation->setStartValue(rcStart);
+        animation->setEndValue(rcEnd);
+        animation->start();
+    }
+        break;
+
+    case MENUITEM_THEME_DEFAULT:
+    {
+        QFile file(":/css/css/style.css");
+        if (file.open(QFile::ReadOnly))
+        {
+            QString qss = QLatin1String(file.readAll());
+            QString paletteColor = qss.mid(20, 7);
+            qApp->setPalette(QPalette(QColor(paletteColor)));
+            qApp->setStyleSheet(qss);
+            file.close();
+        }
+    }
+        break;
+
+    case MENUITEM_THEME_FLATUI:
+    {
+        QFile file(":/css/css/flatui.css");
+        if (file.open(QFile::ReadOnly))
+        {
+            QString qss = QLatin1String(file.readAll());
+            QString paletteColor = qss.mid(20, 7);
+            qApp->setPalette(QPalette(QColor(paletteColor)));
+            qApp->setStyleSheet(qss);
+            file.close();
+        }
+    }
+        break;
+
+    case MENUITEM_THEME_PS:
+    {
+        QFile file(":/css/css/ps.css");
+        if (file.open(QFile::ReadOnly))
+        {
+            QString qss = QLatin1String(file.readAll());
+            QString paletteColor = qss.mid(20, 7);
+            qApp->setPalette(QPalette(QColor(paletteColor)));
+            qApp->setStyleSheet(qss);
+            file.close();
+        }
+    }
+        break;
+
+    default:
+        break;
+    }
 }
