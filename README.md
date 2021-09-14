@@ -40,10 +40,10 @@
 ### 主题切换
 ![主题切换](https://gitee.com/hudejie/IcoTools/raw/master/screenshot/6.png)
 
-### 扁平化
+#### 扁平化
 ![主题切换](https://gitee.com/hudejie/IcoTools/raw/master/screenshot/7.png)
 
-### Photoshop风
+#### Photoshop风
 ![Photoshop风](https://gitee.com/hudejie/IcoTools/raw/master/screenshot/8.png)
 
 ### 生成图标
