@@ -17,6 +17,7 @@
 #include <QMouseEvent>
 
 #define VERSION "v1.0"
+#define MAX_OUTPUT_SIZE 1024
 
 #define GLOBAL_FUNC \
         void CreateAllChildWnd(); \

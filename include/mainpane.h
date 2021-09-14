@@ -41,11 +41,11 @@ private:
     void InitRightPane();
     void InitBottomPane();
 
+    void UpdateSizeCombox();
+
     void resizeEvent(QResizeEvent *event);
 
-
     void UpdatePixmap();
-
     QPixmap GetPixmap( const QString &strColor, uint dwPixWidth, uint dwPixHeight, uint borderRadius );
 
 private slots:

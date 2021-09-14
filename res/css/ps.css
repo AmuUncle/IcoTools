@@ -2,7 +2,7 @@ QPalette{background:#474747;}*{outline:0px;}
 
 
 QWidget[form="mainpane"] {
-	border-radius: 10px;
+	border-radius: 0;
 	background: #474747;
 	color: #D5D5D5;
     
@@ -12,11 +12,11 @@ QWidget[form="mainpane"] {
 
 QWidget[form="m_wLeftPane"],QWidget[form="m_wContentPane"],QWidget[form="m_wRightPane"] {
 	background: #252525;
-	border-radius: 20px 15px;
+	border-radius: 0;
 }
 
 QWidget[form="About"] {
-	border-radius: 10px;
+	border-radius: 0;
 	background: #474747;
 	color: #D5D5D5;
 }

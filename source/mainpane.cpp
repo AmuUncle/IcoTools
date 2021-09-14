@@ -72,6 +72,9 @@ MainPane::MainPane(QWidget *parent) : QWidget(parent)
 
 void MainPane::SetBgColor(QColor color)
 {
+    if (!m_pixOld.isNull())
+        return;
+
     m_colorBg = color;
 
     m_sliderR->setValue(m_colorBg.red());
@@ -300,6 +303,44 @@ void MainPane::InitBottomPane()
     m_comboxSize->setCurrentIndex(10);
 }
 
+void MainPane::UpdateSizeCombox()
+{
+    m_comboxSize->clear();
+
+    QString strFormat = m_comboxFormat->currentText();
+    if (!strFormat.compare(".ico"))
+    {
+        m_comboxSize->addItem("8*8", 8);
+        m_comboxSize->addItem("16*16", 16);
+        m_comboxSize->addItem("24*24", 24);
+        m_comboxSize->addItem("32*32", 32);
+        m_comboxSize->addItem("36*36", 32);
+        m_comboxSize->addItem("40*40", 40);
+        m_comboxSize->addItem("48*48", 48);
+        m_comboxSize->addItem("64*64", 64);
+        m_comboxSize->addItem("100*100", 100);
+        m_comboxSize->addItem("128*128", 128);
+        m_comboxSize->addItem("256*256", 256);
+        m_comboxSize->setCurrentIndex(10);
+    }
+    else
+    {
+        m_comboxSize->addItem("8*8", 8);
+        m_comboxSize->addItem("16*16", 16);
+        m_comboxSize->addItem("24*24", 24);
+        m_comboxSize->addItem("32*32", 32);
+        m_comboxSize->addItem("36*36", 32);
+        m_comboxSize->addItem("40*40", 40);
+        m_comboxSize->addItem("48*48", 48);
+        m_comboxSize->addItem("64*64", 64);
+        m_comboxSize->addItem("100*100", 100);
+        m_comboxSize->addItem("128*128", 128);
+        m_comboxSize->addItem("256*256", 256);
+        m_comboxSize->addItem(QString("%1*%1").arg(MAX_OUTPUT_SIZE), MAX_OUTPUT_SIZE);
+        m_comboxSize->setCurrentIndex(10);
+    }
+}
+
 void MainPane::resizeEvent(QResizeEvent *event)
 {
 
@@ -313,7 +354,7 @@ void MainPane::UpdatePixmap()
     m_labelAV->setText(QString::number(m_colorBg.alpha()));
     m_labelOpacityV->setText(QString::number(m_nOpacity));
 
-    const int MAX_WIDTH = 512;
+    const int MAX_WIDTH = MAX_OUTPUT_SIZE;
 
     if (m_pixOld.isNull())
     {
@@ -341,7 +382,7 @@ void MainPane::UpdatePixmap()
         nBorderRadius = MAX_WIDTH / 2;
 
     QPainterPath path;
-    path.addRoundRect(rcBaic, nBorderRadius, nBorderRadius);
+    path.addRoundRect(rcBaic, m_nBorderRadius, m_nBorderRadius);
     painter.setClipPath(path);
 
     painter.setPen(Qt::NoPen);
@@ -349,8 +390,9 @@ void MainPane::UpdatePixmap()
     painter.drawRect(rcBaic);
 
     QRect rcImg(rcBaic);
+    int nPadding = MAX_WIDTH / 3 * m_nPadding / 100;
     QPixmap p = m_pixOld.scaled(rcImg.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    painter.drawPixmap(rcImg.marginsRemoved(QMargins(m_nPadding, m_nPadding, m_nPadding, m_nPadding)), p);
+    painter.drawPixmap(rcImg.marginsRemoved(QMargins(nPadding, nPadding, nPadding, nPadding)), p);
 
     painter.end();
 
@@ -484,27 +526,6 @@ void MainPane::InitSolts()
         }
     });
 
-    //    connect(m_btnAbout, &QPushButton::clicked, [=]() {
-
-    ////        m_pAboutdlg->setModal(true);
-    ////        m_pAboutdlg->show();
-
-    ////        QPoint ptBtn = m_pCanvas->mapToGlobal(m_pCanvas->pos());
-    ////        QPoint point(ptBtn);
-    ////        point.setX(ptBtn.x() - m_pCanvas->pos().x() + m_pCanvas->width() / 2 - m_pAboutdlg->width() / 2 - 4);
-    ////        point.setY(ptBtn.y() - m_pCanvas->pos().y() - m_pAboutdlg->height() - 2);
-
-    ////        QRect rcStart, rcEnd;
-    ////        rcEnd = QRect(point.x(), point.y() + m_pAboutdlg->height(), m_pAboutdlg->width(), m_pAboutdlg->height());
-    ////        rcStart = QRect(point.x(), point.y(), m_pAboutdlg->width(), m_pAboutdlg->height());
-
-    ////        QPropertyAnimation *animation = new QPropertyAnimation(m_pAboutdlg, "geometry");
-    ////        animation->setDuration(200);
-    ////        animation->setStartValue(rcStart);
-    ////        animation->setEndValue(rcEnd);
-    ////        animation->start();
-    //    });
-
     connect(m_btnExport, &QPushButton::clicked, [=]()
     {
         if (m_pixNew.isNull())
@@ -525,6 +546,11 @@ void MainPane::InitSolts()
             QImage img = pixTemp.toImage();
             img.save(fileName, NULL, 100);
         }
+    });
+
+    connect(m_comboxFormat, &QComboBox::currentTextChanged, [=]()
+    {
+        UpdateSizeCombox();
     });
 }
 

@@ -35,8 +35,8 @@ void About::InitCtrl()
 
     QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
     shadow_effect->setOffset(0, 0);
-    shadow_effect->setColor(QColor(38, 78, 119, 127));
-    shadow_effect->setBlurRadius(30);
+    shadow_effect->setColor(QColor(38, 78, 119));
+    shadow_effect->setBlurRadius(10);
     m_widgetMain->setGraphicsEffect(shadow_effect);
 
     m_labelLogo->setFixedSize(50, 50);
